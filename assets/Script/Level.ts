@@ -8,7 +8,6 @@
 import BottomBar from "./BottomBar";
 import Card from "./Card";
 import { LevelConfig } from "./Config/LevelConfig";
-import Game from "./Game";
 import { UIManager, UIType } from "./UIManager";
 import { Utils } from "./Utils";
 
@@ -24,8 +23,6 @@ class ShowItem {
 
 @ccclass
 export default class Level extends cc.Component {
-  @property(BottomBar)
-  bottomBar: BottomBar = null;
   @property(cc.Node)
   targetPoint: cc.Node[] = [];
   @property(ShowItem)
@@ -33,6 +30,14 @@ export default class Level extends cc.Component {
 
   private _curCompleteCount: number = 0;
   private _gameTime: number = 0; // seconds
+  private _bottomBar: BottomBar = null;
+  public get bottomBar() {
+    return this._bottomBar;
+  }
+
+  onLoad() {
+    this._bottomBar = this.node.getChildByName("bottomBar").getComponent(BottomBar);
+  }
 
   onEnable() {
     cc.director.on("TAKE_IN_SLOT", this._onTakeInSlot.bind(this), this);
@@ -54,7 +59,7 @@ export default class Level extends cc.Component {
       target.getComponent(cc.Sprite).spriteFrame = LevelConfig.itemAtlas.getSpriteFrame(`${randomList[index]}`);
     });
 
-    this.bottomBar.init(this);
+    this._bottomBar.init(this);
     this.schedule(() => {
       this._gameTime++
     }, 1);
