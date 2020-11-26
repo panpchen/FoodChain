@@ -5,7 +5,9 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { Constants } from "../Config/Constants";
 import Game from "../Game";
+import { SendMsg } from "../Net/SendMsg";
 import { UIManager, UIType } from "../UIManager";
 import { Utils } from "../Utils";
 import BaseUI from "./BaseUI";
@@ -20,6 +22,8 @@ export default class ResultUI extends BaseUI {
     init() {
         const time = Game.instance.getAllGameTime();
         this.totalTimeLabel.string = `总用时：${Utils.countDownFormat(time)}`;
+
+        SendMsg.reqSaveAssessStatistics(Constants.AssessStatisticsJson);
     }
 
     clickBackGame() {
